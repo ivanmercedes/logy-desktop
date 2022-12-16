@@ -1,5 +1,5 @@
 import path from "path";
-import { app, BrowserWindow } from "electron";
+import { app, BrowserWindow, ipcMain , shell } from "electron";
 import { release } from "os";
 import installExtension, {
   REACT_DEVELOPER_TOOLS,
@@ -22,11 +22,6 @@ const URL = process.env.VITE_DEV_SERVER_URL;
 const INDEX_HTML = path.join(__dirname, "../dist/index.html");
 
 const createWindow = () => {
-  // Install react dev tool
-  installExtension(REACT_DEVELOPER_TOOLS)
-    .then((name) => console.log(`Added Extension:  ${name}`))
-    .catch((err) => console.log("An error occurred: ", err));
-
   win = new BrowserWindow({
     title: "Main window",
     webPreferences: {
@@ -35,16 +30,27 @@ const createWindow = () => {
       // Consider using contextBridge.exposeInMainWorld
       // Read more on https://www.electronjs.org/docs/latest/tutorial/context-isolation
       nodeIntegration: true,
-      contextIsolation: false,
+      contextIsolation: false,  
     },
   });
   if (process.env.VITE_DEV_SERVER_URL) {
+    // Install react dev tool
+    installExtension(REACT_DEVELOPER_TOOLS)
+      .then((name) => console.log(`Added Extension:  ${name}`))
+      .catch((err) => console.log("An error occurred: ", err));
+
     win.loadURL(URL!);
 
     win.webContents.openDevTools();
   } else {
     win.loadFile(INDEX_HTML);
   }
+
+  // Make all links open with the browser, not with the application
+  win.webContents.setWindowOpenHandler(({ url }) => {
+    if (url.startsWith("https:")) shell.openExternal(url);
+    return { action: "deny" };
+  });
 };
 
 app.whenReady().then(createWindow);
@@ -69,4 +75,8 @@ app.on("activate", () => {
   } else {
     createWindow();
   }
+});
+
+ipcMain.on("test-event", (event, arg) => {
+  console.log(arg);
 });
