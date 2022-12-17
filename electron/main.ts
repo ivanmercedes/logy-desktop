@@ -1,9 +1,11 @@
 import path from "path";
-import { app, BrowserWindow, ipcMain , shell } from "electron";
+import { app, BrowserWindow, ipcMain, shell } from "electron";
 import { release } from "os";
 import installExtension, {
   REACT_DEVELOPER_TOOLS,
 } from "electron-devtools-installer";
+
+import { createServer } from "./webServer";
 
 let win: BrowserWindow | null = null;
 
@@ -30,7 +32,7 @@ const createWindow = () => {
       // Consider using contextBridge.exposeInMainWorld
       // Read more on https://www.electronjs.org/docs/latest/tutorial/context-isolation
       nodeIntegration: true,
-      contextIsolation: false,  
+      contextIsolation: false,
     },
   });
   if (process.env.VITE_DEV_SERVER_URL) {
@@ -46,14 +48,23 @@ const createWindow = () => {
     win.loadFile(INDEX_HTML);
   }
 
+  // remove menu bar
+  win.setMenu(null);
+
   // Make all links open with the browser, not with the application
   win.webContents.setWindowOpenHandler(({ url }) => {
     if (url.startsWith("https:")) shell.openExternal(url);
     return { action: "deny" };
   });
+
+  return win;
 };
 
-app.whenReady().then(createWindow);
+app.whenReady().then(() => {
+  const window = createWindow();
+  // Start web server
+  createServer(window);
+});
 
 app.on("window-all-closed", () => {
   win = null;
@@ -73,10 +84,14 @@ app.on("activate", () => {
   if (allWindows.length) {
     allWindows[0].focus();
   } else {
-    createWindow();
+    const window = createWindow();
+    // Start web server
+    createServer(window);
   }
 });
 
-ipcMain.on("test-event", (event, arg) => {
+
+// TODO: store setting data on flat json file
+ipcMain.on("save-settings", (event, arg) => {
   console.log(arg);
 });
