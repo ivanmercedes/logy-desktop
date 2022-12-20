@@ -4,13 +4,13 @@ import Layout from './components/Layout';
 import { useAppContext } from './context/app-context/app-provider';
 
 function App() {
-	const { logs } = useAppContext();
+	const { logs, filtered } = useAppContext();
 
 	if (logs.length === 0) return <Empty />;
 
 	return (
 		<Layout>
-			{logs.map(log => (
+			{(filtered ?? logs).map(log => (
 				<ItemDebug key={log.id} log={log} />
 			))}
 		</Layout>

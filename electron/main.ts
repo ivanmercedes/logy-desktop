@@ -1,9 +1,9 @@
 import path from 'path';
 import { app, BrowserWindow, ipcMain, shell } from 'electron';
 import { release } from 'os';
-import installExtension, {
-	REACT_DEVELOPER_TOOLS,
-} from 'electron-devtools-installer';
+// import installExtension, {
+// 	REACT_DEVELOPER_TOOLS,
+// } from 'electron-devtools-installer';
 
 import { createServer } from './webServer';
 

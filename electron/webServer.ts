@@ -7,8 +7,6 @@ const server = express();
 export const createServer = (window: BrowserWindow) => {
 	server.use(express.json());
 	server.post('/log', (req: Request, res: Response) => {
-		console.log(req.body);
-
 		window.webContents.send('log', JSON.stringify(req.body));
 
 		res.status(204).send();
