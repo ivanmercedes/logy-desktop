@@ -7,7 +7,7 @@ import { useAppContext } from './context/app-context/app-provider';
 function App() {
 	const { logs, filtered } = useAppContext();
 
-	if (logs.length === 0) return <Empty />;
+	if (logs.length === 0 || filtered?.length === 0) return <Empty />;
 
 	useEffect(() => {}, [logs]);
 	return (
