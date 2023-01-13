@@ -5,6 +5,7 @@ export default (state: any, action: { type: string; payload?: any }) => {
 			return {
 				...state,
 				logs: [],
+				filtered: null,
 			};
 		case 'SHOW_HIDDEN_SETTINGS':
 			return {

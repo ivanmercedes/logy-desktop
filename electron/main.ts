@@ -1,11 +1,12 @@
 import path from 'path';
 import { app, BrowserWindow, ipcMain, shell } from 'electron';
 import { release } from 'os';
+import { createServer } from './webServer';
+
+const execSync = require('child_process').execSync;
 // import installExtension, {
 // 	REACT_DEVELOPER_TOOLS,
 // } from 'electron-devtools-installer';
-
-import { createServer } from './webServer';
 
 let win: BrowserWindow | null = null;
 
@@ -95,4 +96,11 @@ app.on('activate', () => {
 // TODO: store setting data on flat json file
 ipcMain.on('save-settings', (event, arg) => {
 	console.log(arg);
+});
+
+ipcMain.on('open-file', (event, arg) => {
+
+	execSync('code -g ' + arg, {
+		stdio: 'inherit',
+	});
 });

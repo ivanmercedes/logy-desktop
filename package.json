@@ -11,10 +11,10 @@
 		"prepare": "husky install"
 	},
 	"dependencies": {
-		"express": "^4.18.2",
 		"framer-motion": "^7.10.2",
 		"react": "^18.2.0",
-		"react-dom": "^18.2.0"
+		"react-dom": "^18.2.0",
+		"react-json-tree": "^0.18.0"
 	},
 	"devDependencies": {
 		"@commitlint/cli": "^17.3.0",

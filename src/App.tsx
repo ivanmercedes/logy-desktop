@@ -1,3 +1,4 @@
+import { useEffect } from 'react';
 import Empty from './components/Empty';
 import ItemDebug from './components/ItemDebug';
 import Layout from './components/Layout';
@@ -8,6 +9,7 @@ function App() {
 
 	if (logs.length === 0) return <Empty />;
 
+	useEffect(() => {}, [logs]);
 	return (
 		<Layout>
 			{(filtered ?? logs).map(log => (

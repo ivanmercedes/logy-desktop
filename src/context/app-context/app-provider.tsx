@@ -28,54 +28,8 @@ type InitialStateType = {
 	onFilterLogs?: (value: string) => void;
 };
 
-// TODO: remove
-const logs = [
-	{
-		id: '2',
-		color: 'green',
-		data: 'ppepepe',
-		backTrace: 'cacaca',
-	},
-	{
-		id: '1',
-		color: 'red',
-		data: 'ppepepe',
-		backTrace: 'cacaca',
-	},
-	{
-		id: '3',
-		color: 'yellow',
-		data: 'ppepepe',
-		backTrace: 'cacaca',
-	},
-	{
-		id: '5',
-		color: 'blue',
-		data: 'ppepepe',
-		backTrace: 'cacaca',
-	},
-	{
-		id: '12',
-		color: 'green',
-		data: 'ppepepe',
-		backTrace: 'cacaca',
-	},
-	{
-		id: '52',
-		color: 'blue',
-		data: 'ppepepe',
-		backTrace: 'cacaca',
-	},
-	{
-		id: '522',
-		color: 'blue',
-		data: 'ppepepe',
-		backTrace: 'cacaca',
-	},
-];
-
 const initialState = {
-	logs,
+	logs: [],
 	filtered: null,
 	showSettings: false,
 };
@@ -106,9 +60,10 @@ export const AppProvider = ({ children }: AppProviderProps) => {
 	useEffect(() => {
 		return () => {
 			ipcRenderer.on('log', (event: Event, message: string) => {
+				console.log(message);
 				dispatch({
 					type: 'HANDLE_LOG',
-					payload: JSON.parse(message),
+					payload: message,
 				});
 			});
 		};

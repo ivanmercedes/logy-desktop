@@ -9,7 +9,7 @@ function ButtonNav({ color, onClick }: buttonNavProps) {
 	return (
 		<button
 			onClick={onClick}
-			className={' min-w-[48px] h-12 border-[10px] rounded-full ' + color}
+			className={'min-w-[48px] h-12 border-[10px] rounded-full ' + color}
 		></button>
 	);
 }
